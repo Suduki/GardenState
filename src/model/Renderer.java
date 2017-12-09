@@ -1,9 +1,14 @@
 package model;
 
+import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+
+import shaders.StaticShader;
+import toolbox.Maths;
+import entities.Entity;
 
 public class Renderer {
 
@@ -13,11 +18,15 @@ public class Renderer {
 	}
 
 
-	public void render(TexturedModel texturedModel) {
+	public void render(Entity entity, StaticShader shader) {
+		TexturedModel texturedModel = entity.getModel();
 		RawModel model = texturedModel.getRawModel();
 		GL30.glBindVertexArray(model.getVaoID());
 		GL20.glEnableVertexAttribArray(0);
 		GL20.glEnableVertexAttribArray(1);
+		Matrix4f transformationMatrix = Maths.createTransformationMatrix(entity.getPosition(),
+				entity.getRotX(), entity.getRotY(), entity.getRotZ(), entity.getScale());
+		shader.loadTransformationMatrix(transformationMatrix);
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, texturedModel.getTexture().getID());
 		GL11.glDrawElements(GL11.GL_TRIANGLES, model.getVertexCount(), GL11.GL_UNSIGNED_INT, 0);
