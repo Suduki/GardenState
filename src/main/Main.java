@@ -5,6 +5,7 @@ import java.util.Random;
 import org.joml.Vector3f;
 
 import display.DisplayManager;
+import entities.Camera;
 import entities.Entity;
 import model.Loader;
 import model.RawModel;
@@ -14,12 +15,14 @@ import shaders.StaticShader;
 import texture.ModelTexture;
 
 public class Main {
+	public static Camera camera;
 	public static void main(String[] args) {
 
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
-		Renderer renderer = new Renderer();
 		StaticShader shader = new StaticShader();
+		Renderer renderer = new Renderer(shader);
+		camera = new Camera();
 		
 		float[] vertices = {
 				-0.5f, 0.5f, 0,
@@ -44,16 +47,13 @@ public class Main {
 		ModelTexture texture = new ModelTexture(loader.loadTexture("logo"));
 		TexturedModel texturedModel = new TexturedModel(model, texture);
 		
-		Entity entity = new Entity(texturedModel, new Vector3f(0,0,0), 0,0,0,1);
-		
-		Random random = new Random();
+		Entity entity = new Entity(texturedModel, new Vector3f(0,0,-1), 0,0,0,1);
 		
 		while (DisplayManager.continueUpdating()) {
 			renderer.prepare();
 			shader.start();
 			renderer.render(entity, shader);
-			entity.increasePosition((0.5f-random.nextFloat())*0.3f, (.5f-random.nextFloat())*0.3f, 
-					(.5f-random.nextFloat())*0.3f);
+			entity.increasePosition(0,0,-0.1f);
 			shader.stop();
 			DisplayManager.updateDisplay();
 		}
