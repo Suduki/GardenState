@@ -28,7 +28,7 @@ public class Loader {
 	
 	public int loadTexture(String fileName) {
 		Texture texture = null;
-		texture = Texture.fromFile("" + fileName + ".png");
+		texture = Texture.fromFile("res/" + fileName + ".png");
 		int textureID = texture.getTextureId();
 		textures.add(textureID);
 		return textureID;
