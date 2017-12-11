@@ -1,7 +1,6 @@
 package display;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 
 import org.lwjgl.opengl.GL;
 
@@ -9,7 +8,6 @@ public class DisplayManager {
 
 	public static final int TOTAL_PIXEL_X = 600;
 	public static final int TOTAL_PIXEL_Y = 800;
-	private static final int FPS = 60;
 	private static long window;
 	private static KeyboardManager keyboard;
 

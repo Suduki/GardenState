@@ -16,7 +16,22 @@ public class KeyboardManager {
 		if (action == GLFW_PRESS) {
 			switch (key) {
 				case GLFW_KEY_W:
-					Main.camera.moveUp(false);
+					Main.camera.moveNorth(true);
+					break;
+				case GLFW_KEY_S:
+					Main.camera.moveSouth(true);
+					break;
+				case GLFW_KEY_A:
+					Main.camera.moveWest(true);
+					break;
+				case GLFW_KEY_D:
+					Main.camera.moveEast(true);
+					break;
+				case GLFW_KEY_Q:
+					Main.camera.moveUp(true);
+					break;
+				case GLFW_KEY_E:
+					Main.camera.moveDown(true);
 					break;
 			}
 		}
@@ -26,7 +41,22 @@ public class KeyboardManager {
 					glfwSetWindowShouldClose(window, true); // We will detect this in the rendering loop
 					break;
 				case GLFW_KEY_W:
-					Main.camera.moveUp(true);
+					Main.camera.moveNorth(false);
+					break;
+				case GLFW_KEY_S:
+					Main.camera.moveSouth(false);
+					break;
+				case GLFW_KEY_A:
+					Main.camera.moveWest(false);
+					break;
+				case GLFW_KEY_D:
+					Main.camera.moveEast(false);
+					break;
+				case GLFW_KEY_Q:
+					Main.camera.moveUp(false);
+					break;
+				case GLFW_KEY_E:
+					Main.camera.moveDown(false);
 					break;
 			}
 		}
