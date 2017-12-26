@@ -26,9 +26,13 @@ public class Main {
 		Renderer renderer = new Renderer(shader);
 		
 		RawModel model = OBJLoader.loadObjModel("dragon", loader);
+
 		ModelTexture texture = new ModelTexture(loader.loadTexture("dragonTexture"));
-		TexturedModel texturedModel = new TexturedModel(model, texture);
+		texture.setShineDamper(10);
+		texture.setReflectivity(1);
 		
+		TexturedModel texturedModel = new TexturedModel(model, texture);
+
 		Entity entity = new Entity(texturedModel, new Vector3f(15,15,-30), 0,0,90,1);
 		Entity entity2 = new Entity(texturedModel, new Vector3f(-5,0,-25), 0,0,0,1);
 		camera = new Camera();
