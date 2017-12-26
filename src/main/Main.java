@@ -9,9 +9,10 @@ import entities.Camera;
 import entities.Entity;
 import entities.Light;
 import model.Loader;
+import model.MasterRenderer;
 import model.OBJLoader;
 import model.RawModel;
-import model.Renderer;
+import model.EntityRenderer;
 import model.TexturedModel;
 import shaders.StaticShader;
 import texture.ModelTexture;
@@ -22,9 +23,6 @@ public class Main {
 
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
-		StaticShader shader = new StaticShader();
-		Renderer renderer = new Renderer(shader);
-		
 		RawModel model = OBJLoader.loadObjModel("dragon", loader);
 
 		ModelTexture texture = new ModelTexture(loader.loadTexture("dragonTexture"));
@@ -39,22 +37,20 @@ public class Main {
 		
 		Light light = new Light(new Vector3f(0,0,-20), new Vector3f(1,1,1));
 		
+		MasterRenderer renderer = new MasterRenderer();
 		while (DisplayManager.continueUpdating()) {
 			entity.increaseRotation(0f,1.2f,0.3f);
 			entity2.increaseRotation(0f,1,0.3f);
 			camera.move();
 			
-			renderer.prepare();
-			shader.start();
-			shader.loadLight(light);
-			shader.loadViewMatrix(camera);
-			renderer.render(entity2, shader);
-			renderer.render(entity, shader);
-			shader.stop();
+			renderer.processEntity(entity);
+			renderer.processEntity(entity2);
+			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
 		}
 		
-		shader.cleanUp();
+
+		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();
 	}
