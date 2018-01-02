@@ -3,29 +3,46 @@ package entities;
 import org.joml.Vector3f;
 
 public class Camera {
-	private Vector3f position = new Vector3f(0,0,0);
+	private Vector3f position = new Vector3f(500,7,500);
 	private float pitch;
 	private float yaw;
 	private float roll;
 	
+	private float directionX = 0, directionZ = 1;
+	
 	public void move() {
 		if (moveUp) {
-			position.z -= 0.02f;
+			position.y -= 0.2f;
+			if (position.y < 0.1f) {
+				position.y = 0.1f;
+			}
 		}
 		if (moveDown) {
-			position.z += 0.02f;
+			position.y += 0.2f;
 		}
 		if (moveWest) {
-			position.x -= 0.02f;
+			position.z -= directionX;
+			position.x -= directionZ;
 		}
 		if (moveEast) {
-			position.x += 0.02f;
+			position.z += directionX;
+			position.x += directionZ;
 		}
 		if (moveSouth) {
-			position.y -= 0.02f;
+			position.z += directionZ;
+			position.x -= directionX;
 		}
 		if (moveNorth) {
-			position.y += 0.02f;
+			position.z -= directionZ;
+			position.x += directionX;
+		}
+		if (rotate) {
+			pitch +=1;
+		}
+		if (rotateR) {
+			yaw += 1;
+			directionX = (float) Math.sin(Math.toRadians(yaw));
+			directionZ = (float) Math.cos(Math.toRadians(yaw));
 		}
 		
 	}
@@ -70,6 +87,13 @@ public class Camera {
 		moveSouth = b;
 	}
 	
+	private boolean rotate;
+	public void rotate(boolean b) {
+		rotate = b;
+	}
 	
-	
+	private boolean rotateR;
+	public void rotateR(boolean b) {
+		rotateR = b;
+	}
 }

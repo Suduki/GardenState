@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.joml.Vector3f;
@@ -24,38 +26,55 @@ public class Main {
 
 		DisplayManager.createDisplay();
 		Loader loader = new Loader();
-		RawModel model = OBJLoader.loadObjModel("dragon", loader);
 
-		ModelTexture texture = new ModelTexture(loader.loadTexture("dragonTexture"));
-		texture.setShineDamper(10);
-		texture.setReflectivity(1);
-		
-		TexturedModel texturedModel = new TexturedModel(model, texture);
 
-		Entity entity = new Entity(texturedModel, new Vector3f(15,15,-30), 0,0,90,1);
-		Entity entity2 = new Entity(texturedModel, new Vector3f(-5,0,-25), 0,0,0,1);
+		RawModel model = OBJLoader.loadObjModel("tree", loader);
+
+		TexturedModel staticModel = new TexturedModel(model, new ModelTexture(loader.loadTexture("treeTexture")));
+
+		TexturedModel grass = new TexturedModel(OBJLoader.loadObjModel("grassModel", loader),
+				new ModelTexture(loader.loadTexture("grassTexture")));
+
+		TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("fern", loader),
+				new ModelTexture(loader.loadTexture("fern")));
+
+
+		List<Entity> entities = new ArrayList<Entity>();
+		Random random = new Random(1);
+		for (int i = 0; i < 6000; i++){
+
+			//TexturedModel model,    Vector3f position,     float rotX,    float rotY,   float rotZ,    float scale   
+
+			entities.add(new Entity(staticModel, new Vector3f(random.nextFloat() * 800 , 0, random.nextFloat() * 800), 0, 0, 0, 1));
+
+			grass.getTexture().setHasTransparency(true);
+
+			entities.add(new Entity(grass, new Vector3f(random.nextFloat() * 800, 0, random.nextFloat() * 800), 0, 0, 0, 0.1f));
+
+			fern.getTexture().setHasTransparency(true);
+
+			entities.add(new Entity(fern, new Vector3f(random.nextFloat() * 800, 0, random.nextFloat() * 800), 0, 0, 0, random.nextFloat()*0.1f)); 
+		}
+
 		camera = new Camera();
-		
+
 		Light light = new Light(new Vector3f(2000,2000,2000), new Vector3f(1,1,1));
-		
-		Terrain terrain = new Terrain (-1, -1, loader, new ModelTexture(loader.loadTexture("logo")));
-		
+		Terrain terrain = new Terrain (0, 0, loader, new ModelTexture(loader.loadTexture("grass")));
 		MasterRenderer renderer = new MasterRenderer();
 		while (DisplayManager.continueUpdating()) {
-			entity.increaseRotation(0f,1.2f,0.3f);
-			entity2.increaseRotation(0f,1,0.3f);
 			camera.move();
-			
-			
+
 			renderer.processTerrain(terrain);
-			
-			renderer.processEntity(entity);
-			renderer.processEntity(entity2);
+
+			for(Entity d:entities) {
+				renderer.processEntity(d);
+			}
+
 			renderer.render(light, camera);
 			DisplayManager.updateDisplay();
-		}
-		
 
+
+		}
 		renderer.cleanUp();
 		loader.cleanUp();
 		DisplayManager.closeDisplay();

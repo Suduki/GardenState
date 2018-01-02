@@ -15,6 +15,7 @@ public class Maths {
 		matrix.rotate((float) Math.toRadians(ry), new Vector3f(0,1,0));
 		matrix.rotate((float) Math.toRadians(rz), new Vector3f(0,0,1));
 
+		matrix.scale(scale);
 		return matrix;
 	}
 

@@ -13,6 +13,7 @@ public class KeyboardManager {
 
 
 	public void handleKeyboardEvents(int action, int key) {
+		
 		if (action == GLFW_PRESS) {
 			switch (key) {
 				case GLFW_KEY_W:
@@ -32,6 +33,12 @@ public class KeyboardManager {
 					break;
 				case GLFW_KEY_E:
 					Main.camera.moveDown(true);
+					break;
+				case GLFW_KEY_Z:
+					Main.camera.rotate(true);
+					break;
+				case GLFW_KEY_X:
+					Main.camera.rotateR(true);
 					break;
 			}
 		}
@@ -57,6 +64,12 @@ public class KeyboardManager {
 					break;
 				case GLFW_KEY_E:
 					Main.camera.moveDown(false);
+					break;
+				case GLFW_KEY_Z:
+					Main.camera.rotate(false);
+					break;
+				case GLFW_KEY_X:
+					Main.camera.rotateR(false);
 					break;
 			}
 		}
